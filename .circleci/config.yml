@@ -14,6 +14,9 @@ jobs:
           PG_HOST: localhost
           RAILS_ENV: test
           RACK_ENV: test
+      - image: cimg/postgres:14.0
+        environment:
+          POSTGRES_DB: db_name
     steps:
       - checkout
       - run:
