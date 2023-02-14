@@ -40,7 +40,7 @@ jobs:
             DOCKERIZE_VERSION: v0.6.1
       - run:
           name: Wait for db
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m      
+          command: dockerize -wait postgres://portfolio@localhost:5432/portfolio_test -timeout 1m      
       - run: 
           name: "Run Tests"
           command: bundle exec rspec 
