@@ -1,0 +1,69 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine.
+# See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+orbs:
+  ruby: circleci/ruby@1.8.0
+description: Run and store all specs
+
+# Define a job to be invoked later in a workflow.
+# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+jobs:
+  build:
+    working_directory: ~/Portfolio-Site
+    docker:
+      - image: cimg/ruby:2.7.4
+        environment:
+          PG_HOST: localhost
+          RAILS_ENV: test
+          RACK_ENV: test
+    steps:
+      - checkout # pull down our git code.
+      - ruby/install-deps
+  test:
+    docker:
+      - image: cimg/ruby:2.7.4
+        environment:
+          PG_HOST: localhost
+          RAILS_ENV: test
+          RACK_ENV: test
+      - image: cimg/postgres:14.0
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+        environment:
+          POSTGRES_USER: portfolio
+          POSTGRES_DB: portfolio_test
+          POSTGRES_PASSWORD: ""
+    environment: 
+      PGHOST: 127.0.0.1
+      PGUSER: portfolio
+      PGPASSWORD: ""
+      RAILS_ENV: test
+    steps:
+      - checkout
+      - ruby/install-deps
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: Set up DB
+          command: |
+            bundle exec rake db:create db:schema:load --trace
+            bundle exec rake db:migrate
+          environment:
+            DATABASE_URL: "postgres://portfolio@localhost:5432/portfolio_test"    
+      - run: 
+          name: "Run Tests"
+          command: bundle exec rspec 
+      - store_test_results:
+          path: ~/test_stored_results
+
+# Invoke jobs via workflows
+# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+workflows:
+  build-workflow:
+    jobs:
+      - build
+  test-workflow:
+    jobs:
+      - test
