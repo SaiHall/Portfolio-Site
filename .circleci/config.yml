@@ -6,24 +6,33 @@ description: Run and store all specs
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  run-tests:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+  build:
+    working_directory: ~/Portfolio-Site
     docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+      - image: cimg/ruby:2.7
+        environment:
+          PG_HOST: localhost
+          RAILS_ENV: test
+          RACK_ENV: test
     steps:
       - checkout
       - run:
-          name: Run Tests
-          command: bundle exec rspec
+          name: Install Ruby Dependencies
+          command: bundle install
+      - run:
+          name: Set up DB
+          command: |
+            bundle exec rake db:create db:schema:load --trace
+            bundle exec rake db:migrate
+      - run: 
+          name: "Run Tests"
+          command: bundle exec rspec 
       - store_test_results:
           path: ~/test_stored_results
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  run-tests-workflow:
+  build-workflow:
     jobs:
-      - run-tests
+      - build
