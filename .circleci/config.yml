@@ -33,6 +33,12 @@ jobs:
         environment:
           POSTGRES_USER: portfolio
           POSTGRES_DB: portfolio_test
+          POSTGRES_PASSWORD: ""
+    environment: 
+      PGHOST: 127.0.0.1
+      PGUSER: portfolio
+      PGPASSWORD: ""
+      RAILS_ENV: test
     steps:
       - checkout
       - ruby/install-deps
