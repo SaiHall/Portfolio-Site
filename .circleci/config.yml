@@ -19,7 +19,7 @@ jobs:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
         environment:
-          POSTGRES_USER: postgres
+          POSTGRES_USER: portfolio
           POSTGRES_DB: portfolio_test
     steps:
       - checkout
@@ -40,7 +40,7 @@ jobs:
             bundle exec rake db:create db:schema:load --trace
             bundle exec rake db:migrate
           environment:
-            DATABASE_URL: "postgres://ubuntu@localhost:5432/db_name"
+            DATABASE_URL: "postgres://ubuntuportfolio@localhost:5432/portfolio_test"
       - run: 
           name: "Run Tests"
           command: bundle exec rspec 
