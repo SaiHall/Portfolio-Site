@@ -19,11 +19,11 @@ jobs:
           name: Run Tests
           command: bundle exec rspec
       - store_test_results:
-        path: ~/test_stored_results
+          path: ~/test_stored_results
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   run-tests-workflow:
     jobs:
-      - Run Tests
+      - run-tests
