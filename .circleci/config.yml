@@ -9,7 +9,7 @@ jobs:
   build:
     working_directory: ~/Portfolio-Site
     docker:
-      - image: cimg/ruby:2.7
+      - image: cimg/ruby:2.7.4
         environment:
           PG_HOST: localhost
           RAILS_ENV: test
