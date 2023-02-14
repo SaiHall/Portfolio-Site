@@ -40,7 +40,7 @@ jobs:
             bundle exec rake db:create db:schema:load --trace
             bundle exec rake db:migrate
           environment:
-            DATABASE_URL: "postgres://ubuntuportfolio@localhost:5432/portfolio_test"
+            DATABASE_URL: "postgres://portfolio@localhost:5432/portfolio_test"
       - run: 
           name: "Run Tests"
           command: bundle exec rspec 
