@@ -55,4 +55,42 @@ RSpec.describe 'Home Page', type:feature do
       end
     end
   end
+
+  context 'Project Highlight section' do
+    it 'has a section for displaying my projects' do
+      expect(page).to have_selector("section#projectHighlight")
+    end
+
+    it 'has a title in this section: PH' do
+      within '#projectHighlight' do
+        expect(page).to have_selector("h3#ph-Title")
+        expect(page).to have_text("Project Highlight")
+      end
+    end
+
+    it 'has a two divs for different projects' do
+      within '#projectHighlight' do
+        expect(page).to have_selector("div#projectOne")
+        expect(page).to have_selector("div#projectTwo")
+      end
+    end
+
+    it 'has a place for a description in first div' do
+      within '#projectHighlight' do
+        within '#projectOne' do
+          expect(page).to have_selector("p#projectOneDescription")
+          expect(page).to have_text("Temporary Text Project One Description")
+        end
+      end
+    end
+
+    it 'has a place for a description in second div' do
+      within '#projectHighlight' do
+        within '#projectTwo' do
+          expect(page).to have_selector("p#projectTwoDescription")
+          expect(page).to have_text("Temporary Text Project Two Description")
+        end
+      end
+    end
+  end
 end
