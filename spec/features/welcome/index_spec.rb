@@ -31,8 +31,27 @@ RSpec.describe 'Home Page', type:feature do
     it 'has a section for me to write about my professional background' do
       within '#professionalBackground' do
         expect(page).to have_selector("p#professionalBackgroundText")
-        expect(page).to have_text("Temporary Test Text -PB")
-        
+        expect(page).to have_text("Temporary Test Text -PB")        
+      end
+    end
+  end
+
+  context 'about me section' do
+    it 'has a section for my about me' do
+      expect(page).to have_selector("section#aboutMe")
+    end
+
+    it 'has a title in this section: AM' do
+      within '#aboutMe' do
+        expect(page).to have_selector("h3#am-Title")
+        expect(page).to have_text("A Little About Me")
+      end
+    end
+
+    it 'has a section for me to write about myself' do
+      within '#aboutMe' do
+        expect(page).to have_selector("p#aboutMeText")
+        expect(page).to have_text("Temporary Test Text -AM")        
       end
     end
   end
