@@ -18,9 +18,15 @@ RSpec.describe 'Blog Index Page', type:feature do
   it 'has a section for blog previews' do
     expect(page).to have_selector('#postPreviews')
   end
+
   context "New blog post button" do
     it 'has a button to add a new blog post' do
      expect(page).to have_button("New Blog Post")
-   end
+    end
+
+    it 'will take a user to the new blog post page when clicked' do
+      click_button("New Blog Post")
+      expect(page).to have_current_path("/blog/new")
+    end
   end
 end
